@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {fetchAllOwners} from "../api/api";
+import {fetchAllOwners, registerOwner} from "../api/api";
 
-const identify = (uid, owners) => {
+const identify = (uid, owners, setFn) => {
   if (owners.map(o => o._id).some(id => id === uid)) {
     localStorage.setItem("ownerId", uid)
+    setFn(uid)
     console.log(`Identified as ${uid}`)
   } else {
     console.log(uid)
@@ -12,25 +13,25 @@ const identify = (uid, owners) => {
 }
 
 export const Owners = () => {
+  const [existingId, setExistingId] = useState(localStorage.getItem("ownerId"))
   const [ownerId, setOwnerId] = useState("")
-  const [ownerTitle, setOwnerTitle] = useState("")
-  const [ownerEmail, setOwnerEmail] = useState("")
-  const [ownerPk, setOwnerPk] = useState("")
+  const [title, setTitle] = useState("")
+  const [email, setEmail] = useState("")
+  const [paymentPk, setPaymentPk] = useState("")
   const [owners, setOwners] = useState([])
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetchAllOwners()
+      const res = await fetchAllOwners() // todo: don't fetch all of them, just one
       setOwners(res)
     }
     fetchData()
   }, [])
-  const existingUid = localStorage.getItem("ownerId")
 
   return (
     <div className="container">
       <div className="jumbotron">
-        { existingUid ?
-          <input className="form-control" disabled value={existingUid} /> :
+        { existingId && existingId !== 'undefined' ?
+          <input className="form-control" disabled value={existingId} /> :
           <>
             <h3>Existing Account</h3>
             <div className="form-group">
@@ -42,7 +43,7 @@ export const Owners = () => {
               <input className="btn btn-primary"
                      value="Confirm"
                      onClick={() => {
-                       identify(ownerId, owners)
+                       identify(ownerId, owners, setExistingId)
                      }}
               />
             </div>
@@ -50,20 +51,30 @@ export const Owners = () => {
             <div className="form-group">
               <label>SME Name:</label>
               <input className="form-control"
-                     onChange={(e) => { setOwnerTitle(e.target.value) }}
-                     value={ownerTitle}
+                     onChange={(e) => { setTitle(e.target.value) }}
+                     value={title}
               />
               <label>Contact Email:</label>
               <input className="form-control"
-                     onChange={(e) => { setOwnerEmail(e.target.value) }}
-                     value={ownerEmail}
+                     onChange={(e) => { setEmail(e.target.value) }}
+                     value={email}
               />
               <label>Your Stripe Publishable Key:</label>
               <input className="form-control"
-                     onChange={(e) => { setOwnerPk(e.target.value) }}
-                     value={ownerPk}
+                     onChange={(e) => { setPaymentPk(e.target.value) }}
+                     value={paymentPk}
               />
-              <input className="btn btn-primary" value="Submit" />
+              <input className="btn btn-primary" value="Submit" onClick={() => {
+                registerOwner({
+                  title,
+                  paymentPk,
+                  email,
+                }).then(res => {
+                  console.log(res)
+                  localStorage.setItem("ownerId", res._id)
+                  setExistingId(res._id)
+                })
+              }} />
             </div>
           </>
         }

@@ -4,6 +4,8 @@ import {Route, BrowserRouter, Switch} from "react-router-dom"
 import {Landing} from "./pages/Landing"
 import {Owners} from "./pages/Owners"
 import {Products} from "./pages/Products";
+import {ProductCoupons} from "./pages/ProductCoupons";
+import {PurchaseCoupon} from "./pages/PurchaseCoupon";
 
 const App = () => {
   return (
@@ -13,8 +15,8 @@ const App = () => {
         <Route exact path="/demo" component={Owners} />
         <Route exact path="/demo/account" component={Owners} />
         <Route exact path="/demo/products" component={Products} />
-        {/*<Route exact path="/demo/products/:productId/coupons" component={ProductCoupons} />*/}
-        {/*<Route exact path="/support/:productId" component={PurchaseCoupon} />*/}
+        <Route exact path="/demo/products/:productId/coupons" component={ProductCoupons} />
+        <Route exact path="/support/:productId" component={PurchaseCoupon} />
         <Route component={Landing} />
       </Switch>
     </BrowserRouter>

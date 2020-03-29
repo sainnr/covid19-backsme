@@ -8,6 +8,8 @@ const renderProducts = (products) => {
       <h4>{ pr.title }</h4>
       <p>{ pr.sku }</p>
       <p>{ pr.price }</p>
+      <Link to={`/support/${pr._id}`} className="btn btn-primary">Share</Link>
+      <Link to={`products/${pr._id}/coupons`} className="btn btn-outline-secondary">Coupons</Link>
     </div>
   </div>
   return (
@@ -31,11 +33,11 @@ export const Products = () => {
     if (ownerId) {
       fetchData(ownerId)
     }
-  }, [])
+  }, [ownerId])
 
   return (
     <div className="container">
-      { ownerId ?
+      { ownerId && ownerId !== 'undefined' ?
         <>
           { renderProducts(products) }
           <div className="row">
