@@ -1,9 +1,11 @@
 const router = require('express').Router()
 const productRouter = require('./productRouter')
+const productCouponRouter = require('./productCouponRouter')
 const couponRouter = require('./couponRouter')
 
 router.use('/api/products', productRouter)
-productRouter.use('/:productId/coupons', couponRouter)
+router.use('/api/coupons', couponRouter)
+productRouter.use('/:productId/coupons', productCouponRouter)
 
 router.use((req, res) => {
   res.send('get started')

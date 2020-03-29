@@ -53,8 +53,10 @@ URL: https://frozen-sea-24199.herokuapp.com/api
 - `GET /products/:id` retrieves a product by its UID
 
 ### `Coupons`
+With parent `product` root:
 - `GET /products/:productId/coupons` lists all issued coupons for the product `productId`
 - `POST /products/:productId/coupons` issues a new coupon (empty JSON body is fine)
-- `GET /products/:productId/coupons/:id` retrieves a product's coupon by its UID
-- `DELETE /products/:productId/coupons/:id` redeems a coupon by its UID (can't be redeemed more than once)
 
+Direct `coupon` endpoints:
+- `GET /coupons/:id` retrieves a coupon by its UID
+- `DELETE /coupons/:id` redeems a coupon by its UID (can't be redeemed more than once)
