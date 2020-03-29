@@ -86,7 +86,7 @@ export const Products = () => {
               }).then(res => setProducts([...products, res]))
             }}/>
           </div>
-          <h2 className="mb-4">Existing products</h2>
+          { products && products.length > 0 && <h2 className="mb-4">Existing products</h2> }
           {renderProducts(products)}
         </> :
         <>
