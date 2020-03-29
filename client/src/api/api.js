@@ -9,3 +9,6 @@ export const createProduct = (product) => axios.post(`/api/products`, product).t
 export const fetchProduct = (productId) => axios.get(`/api/products/${productId}`).then(r => r.data)
 
 export const fetchProductCoupons = (productId) => axios.get(`/api/products/${productId}/coupons`).then(r => r.data)
+export const issueCoupon = (productId) => axios.post(`/api/products/${productId}/coupons`).then(r => r.data)
+export const fetchCoupon = (couponId) => axios.get(`/api/coupons/${couponId}`).then(r => r.data)
+export const redeemCoupon = (couponId) => axios.delete(`/api/coupons/${couponId}`).then(r => r.data)

@@ -6,6 +6,7 @@ import {Owners} from "./pages/Owners"
 import {Products} from "./pages/Products";
 import {ProductCoupons} from "./pages/ProductCoupons";
 import {PurchaseCoupon} from "./pages/PurchaseCoupon";
+import {Coupon} from "./pages/Coupon";
 
 const App = () => {
   return (
@@ -16,7 +17,8 @@ const App = () => {
         <Route exact path="/demo/account" component={Owners} />
         <Route exact path="/demo/products" component={Products} />
         <Route exact path="/demo/products/:productId/coupons" component={ProductCoupons} />
-        <Route exact path="/support/:productId" component={PurchaseCoupon} />
+        <Route path="/support/:productId/:status?" component={PurchaseCoupon} />
+        <Route exact path="/coupon/:couponId" component={Coupon} />
         <Route component={Landing} />
       </Switch>
     </BrowserRouter>
