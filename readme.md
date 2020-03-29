@@ -35,3 +35,26 @@ Possible next steps:
 * add business accounts so they could manage their coupons
 * with two above, make a two-side confirmation of the completed transaction when goods are received
 
+## API
+
+URL: https://frozen-sea-24199.herokuapp.com/api
+
+### `Products`
+- `GET /products` lists all registered products with their SKUs
+- `POST /products` creates a new product
+```
+{
+  "ownerUuid": "<account UID>",
+  "sku": "E213",
+  "title": "N95 Mask",
+  "price": 213.3
+}
+```
+- `GET /products/:id` retrieves a product by its UID
+
+### `Coupons`
+- `GET /products/:productId/coupons` lists all issued coupons for the product `productId`
+- `POST /products/:productId/coupons` issues a new coupon (empty JSON body is fine)
+- `GET /products/:productId/coupons/:id` retrieves a product's coupon by its UID
+- `DELETE /products/:productId/coupons/:id` redeems a coupon by its UID (can't be redeemed more than once)
+
