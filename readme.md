@@ -40,19 +40,24 @@ Possible next steps:
 URL: https://frozen-sea-24199.herokuapp.com/api
 
 ### `Products`
-- `GET /products` lists all registered products with their SKUs
+Create and browse products.
+
+- `GET /products` lists all registered products with their SKUs.
+Supply optional query params to filter out products, 
+e.g. `/products?ownerId=<account UID>` to get all products of one owner.
 - `POST /products` creates a new product
 ```
 {
   "ownerUuid": "<account UID>",
-  "sku": "E213",
-  "title": "N95 Mask",
-  "price": 213.3
+  "sku": "<product SKU from Stripe e.g. sku_H001jAhjfjw3RX6zV>",
+  "title": "N95 Mask"
 }
 ```
 - `GET /products/:id` retrieves a product by its UID
 
 ### `Coupons`
+Issue and redeem product coupons.
+
 With parent `product` root:
 - `GET /products/:productId/coupons` lists all issued coupons for the product `productId`
 - `POST /products/:productId/coupons` issues a new coupon (empty JSON body is fine)
@@ -60,3 +65,17 @@ With parent `product` root:
 Direct `coupon` endpoints:
 - `GET /coupons/:id` retrieves a coupon by its UID
 - `DELETE /coupons/:id` redeems a coupon by its UID (can't be redeemed more than once)
+
+### `Owners`
+Create and browse Owner accounts.
+
+- `GET /owners` lists all registered Owner accounts
+- `GET /owners/:id` retrieves an account by its UID
+- `POST /owners` registers new Owner account:
+```
+{
+  "paymentPk": "<Stripe API PK e.g. pk_test_R227843skjhgKJDHsjd3iF>",
+  "title": "COVID Hacker",
+  "email": "fight@covid.org"
+}
+```
