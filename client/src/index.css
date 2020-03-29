@@ -15,3 +15,18 @@ code {
 .fit-c {
   width: fit-content;
 }
+
+.hero-bg {
+  padding: 0 !important;
+  background: url("/images/hero.jpg") no-repeat center;
+  color: white;
+}
+
+.hero-overlay {
+  padding: 14em 16em !important;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.contact-icon {
+  width: 64px;
+}
