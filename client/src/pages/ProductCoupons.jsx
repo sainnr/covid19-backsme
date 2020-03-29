@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import {fetchProductCoupons} from "../api/api";
 
 const renderCoupons = (coupons) => {
-  const renderOne = (c) => <div className="col-3 grid-margin">
+  const renderOne = (c) => <div key={c._id} className="col-3 grid-margin">
     <div className="card h-100">
       <h4>Product { c.productId }</h4>
       <p>Redeemed: { c.isRedeemed.toString() }</p>

@@ -3,12 +3,12 @@ import {createProduct, fetchOwnerProducts} from "../api/api";
 import {Link} from "react-router-dom";
 
 const renderProducts = (products) => {
-  const renderOne = (pr) => <div className="col-3 grid-margin">
+  const renderOne = (pr) => <div key={pr._id} className="col-3 grid-margin">
     <div className="card h-100">
       <h4>{ pr.title }</h4>
       <p>{ pr.sku }</p>
       <p>{ pr.price }</p>
-      <Link to={`/support/${pr._id}`} className="btn btn-primary">Share</Link>
+      <Link to={`/support/${pr._id}`} className="btn btn-primary">Offer</Link>
       <Link to={`products/${pr._id}/coupons`} className="btn btn-outline-secondary">Coupons</Link>
     </div>
   </div>
