@@ -10,7 +10,7 @@ router.use('/api/products', productRouter)
 productRouter.use('/:productId/coupons', productCouponRouter)
 
 router.use((req, res) => {
-  res.send('get started')
+  res.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
 
 module.exports = router
