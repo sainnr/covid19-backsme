@@ -3,11 +3,11 @@ import {useParams} from "react-router-dom";
 import {fetchProductCoupons} from "../api/api";
 
 const renderCoupons = (coupons) => {
-  const renderOne = (c) => <div key={c._id} className="col-3 grid-margin">
-    <div className="card h-100">
-      <h4>Product { c.productId }</h4>
+  const renderOne = (c) => <div key={c._id} className="col-3 grid-margin mb-3">
+    <div className="card h-100 p-3">
+      <h4>{ c.productId }</h4>
       <p>Redeemed: { c.isRedeemed.toString() }</p>
-      <p>Issued on { c.timestamp }</p>
+      <p>Issued: { c.timestamp }</p>
     </div>
   </div>
   return (
@@ -31,7 +31,8 @@ export const ProductCoupons = () => {
   }, [productId])
 
   return (
-    <div className="container">
+    <div className="container pt-4">
+      <h2 className="mb-4">Coupons issued for product { productId }</h2>
       { renderCoupons(coupons) }
     </div>
   )

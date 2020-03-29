@@ -3,13 +3,15 @@ import {createProduct, fetchOwnerProducts} from "../api/api";
 import {Link} from "react-router-dom";
 
 const renderProducts = (products) => {
-  const renderOne = (pr) => <div key={pr._id} className="col-3 grid-margin">
-    <div className="card h-100">
-      <h4>{ pr.title }</h4>
-      <p>{ pr.sku }</p>
-      <p>{ pr.price }</p>
-      <Link to={`/support/${pr._id}`} className="btn btn-primary">Offer</Link>
-      <Link to={`products/${pr._id}/coupons`} className="btn btn-outline-secondary">Coupons</Link>
+  const renderOne = (pr) => <div key={pr._id} className="col-3 grid-margin mb-3">
+    <div className="card h-100 p-3">
+      <h4>{pr.title}</h4>
+      <p>SKU: {pr.sku}</p>
+      <p>Display Price: {pr.price}</p>
+      <div className="d-flex">
+        <Link to={`/support/${pr._id}`} className="btn btn-primary fit-c mr-2">Offer</Link>
+        <Link to={`products/${pr._id}/coupons`} className="btn btn-outline-secondary fit-c">Coupons</Link>
+      </div>
     </div>
   </div>
   return (
@@ -37,39 +39,55 @@ export const Products = () => {
 
   return (
     <div className="container">
-      { ownerId && ownerId !== 'undefined' ?
+      {ownerId && ownerId !== 'undefined' ?
         <>
-          { renderProducts(products) }
-          <div className="row">
-            <div className="col-4">
-              <h3>New product</h3>
-              <div className="form-group">
+          <div className="jumbotron mt-3">
+            <h3>Create new product</h3>
+            <p>
+              Use this page to create new products so you could issue coupons for them later.
+              Make sure you registered them in Stripe first, and don't forget to specify a valid Stripe SKU here.
+              It will be used when your customers will be purchasing coupons for the products.
+            </p>
+            <div className="form-row">
+              <div className="form-group col-3">
                 <label>Product title:</label>
                 <input className="form-control"
-                       onChange={(e) => { setTitle(e.target.value) }}
+                       onChange={(e) => {
+                         setTitle(e.target.value)
+                       }}
                        value={title}
                 />
+              </div>
+              <div className="form-group col-3">
                 <label>Stripe product SKU:</label>
                 <input className="form-control"
-                       onChange={(e) => { setSku(e.target.value) }}
+                       onChange={(e) => {
+                         setSku(e.target.value)
+                       }}
                        value={sku}
                 />
+              </div>
+              <div className="form-group col-3">
                 <label>Display price:</label>
                 <input className="form-control"
-                       onChange={(e) => { setPrice(e.target.value) }}
+                       onChange={(e) => {
+                         setPrice(e.target.value)
+                       }}
                        value={price}
                 />
-                <input className="btn btn-primary" value="Submit" onClick={() => {
-                  createProduct({
-                    title,
-                    sku,
-                    price,
-                    ownerId
-                  }).then(res => setProducts([...products, res]))
-                }} />
               </div>
             </div>
+            <input type="button" className="btn btn-primary" value="Create" onClick={() => {
+              createProduct({
+                title,
+                sku,
+                price,
+                ownerId
+              }).then(res => setProducts([...products, res]))
+            }}/>
           </div>
+          <h2 className="mb-4">Existing products</h2>
+          {renderProducts(products)}
         </> :
         <>
           Please <Link to={"/demo/account"}>identify yourself</Link> first.

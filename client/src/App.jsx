@@ -7,20 +7,24 @@ import {Products} from "./pages/Products";
 import {ProductCoupons} from "./pages/ProductCoupons";
 import {PurchaseCoupon} from "./pages/PurchaseCoupon";
 import {Coupon} from "./pages/Coupon";
+import {Nav} from "./components/Nav";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={Landing} />
-        <Route exact path="/demo" component={Owners} />
-        <Route exact path="/demo/account" component={Owners} />
-        <Route exact path="/demo/products" component={Products} />
-        <Route exact path="/demo/products/:productId/coupons" component={ProductCoupons} />
-        <Route path="/support/:productId/:status?" component={PurchaseCoupon} />
-        <Route exact path="/coupon/:couponId" component={Coupon} />
-        <Route component={Landing} />
-      </Switch>
+      <div>
+        <Nav/>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/demo" component={Owners} />
+          <Route exact path="/demo/account" component={Owners} />
+          <Route exact path="/demo/products" component={Products} />
+          <Route exact path="/demo/products/:productId/coupons" component={ProductCoupons} />
+          <Route path="/support/:productId/:status?" component={PurchaseCoupon} />
+          <Route exact path="/coupon/:couponId" component={Coupon} />
+          <Route component={Landing} />
+        </Switch>
+      </div>
     </BrowserRouter>
   )
 }

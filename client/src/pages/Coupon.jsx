@@ -17,12 +17,12 @@ export const Coupon = () => {
 
   return (
     <div className="container">
-      {coupon ? <div className="jumbotron">
-        <h3>{coupon._id}</h3>
+      {coupon ? <div className="jumbotron mt-3">
+        <h3>Unique coupon ID: {coupon._id}</h3>
         <p>Product: {coupon.productId}</p>
         <p>Redeemed: { `${coupon.isRedeemed}` }</p>
         <p>Issued on: {coupon.timestamp}</p>
-        <input className="btn btn-primary" value="Redeem" onClick={() => {
+        <input className="btn btn-primary" type="button" value="Redeem" onClick={() => {
           if (!coupon.isRedeemed) {
             redeemCoupon(coupon._id).then(res => setCoupon(res))
           }

@@ -25,14 +25,16 @@ export const PurchaseCoupon = () => {
   }, [productId, status])
   return (
     <div className="container">
-      <div className="jumbotron">
+      <div className="jumbotron mt-3">
         { product && owner ?
           <>
-            <h2>{ product.title }</h2>
-            <p>Company: { product.ownerId }</p>
-            <p>Estimated price: { product.price }</p>
+            <div className="alert alert-info">
+              Support your favourite company by purchasing the coupon that you can use later
+            </div>
+            <h2>Coupon offer for "{ product.title }"</h2>
+            <p>Offering company: { product.ownerId }</p>
+            <p>Display price: { product.price }</p>
             { status !== 'success' && <>
-              Support your favourite company by purchasing the coupon that you can use later:
               <button
                 className="btn btn-primary"
                 role="link"
@@ -54,12 +56,12 @@ export const PurchaseCoupon = () => {
                 Buy Coupon
               </button>
             </>}
-            { status === 'cancelled' && <div className="alert alert-warning">Payment has been cancelled</div> }
+            { status === 'cancelled' &&
+              <div className="alert alert-warning mt-2">Payment has been cancelled</div> }
             { status === 'success' && <>
               <div className="alert alert-success">Payment successful!</div>
               { newCoupon && <>
-                <label>View your coupon:</label>
-                <Link to={`/coupon/${newCoupon._id}`} className="btn btn-success">Show</Link>
+                <Link to={`/coupon/${newCoupon._id}`} className="btn btn-success">Show My Coupon</Link>
               </>
               }
             </>
