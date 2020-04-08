@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {fetchAllOwners, registerOwner} from "../api/api";
+import {fetchOwner, registerOwner} from "../api/api";
 import {Link} from "react-router-dom";
 
-const identify = (uid, owners, setFn) => {
-  if (owners.map(o => o._id).some(id => id === uid)) {
+const identify = (uid, setFn, errFn) =>
+  fetchOwner(uid).then(res => {
     localStorage.setItem("ownerId", uid)
-    setFn(uid)
-    console.log(`Identified as ${uid}`)
-  } else {
-    console.log(uid)
-    console.log(owners)
-  }
-}
+    setFn(res)
+    console.info(`Identified as ${uid}`)
+  }).catch(e => {
+    errFn(`Can't find account "${uid}"`)
+    console.error(e)
+  })
 
 export const Owners = () => {
   const [existingId, setExistingId] = useState(localStorage.getItem("ownerId"))
@@ -19,25 +18,30 @@ export const Owners = () => {
   const [title, setTitle] = useState("")
   const [email, setEmail] = useState("")
   const [paymentPk, setPaymentPk] = useState("")
-  const [owners, setOwners] = useState([])
+  const [error, setError] = useState("")
+  const [ownerDetails, setOwnerDetails] = useState()
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetchAllOwners() // todo: don't fetch all of them, just one
-      setOwners(res)
+      const res = await fetchOwner(existingId)
+      setOwnerDetails(res)
     }
-    fetchData()
-  }, [])
+    if (existingId) {
+      fetchData()
+    }
+  }, [existingId])
 
   return (
     <div className="container">
       <div className="jumbotron mt-3">
-        { existingId && existingId !== 'undefined' ?
+        { existingId && existingId !== 'undefined' && ownerDetails ?
           <>
-            <h3>Current account ID</h3>
-            <input className="form-control mt-3" disabled value={existingId} />
+            <h3>Your account details</h3>
+            <p>{ ownerDetails.title }</p>
+            <p>Unique ID: { ownerDetails._id }</p>
+            <p>Stripe Public Key: { ownerDetails.paymentPk }</p>
             <div className="d-flex mt-3">
               <Link className="btn btn-primary fit-c" to="/demo/products">Manage Products</Link>
-              <input className="btn btn-secondary ml-3" type="button" value="Cancel"
+              <input className="btn btn-secondary ml-3" type="button" value="Exit"
                      onClick={() => {
                        localStorage.removeItem("ownerId")
                        setExistingId(undefined)
@@ -52,14 +56,14 @@ export const Owners = () => {
               <input className="form-control"
                      onChange={(e) => { setOwnerId(e.target.value) }}
                      value={ownerId}
+                     placeholder="Your existing Account ID"
               />
               <input className="btn btn-primary ml-2" type="button"
                      value="Confirm"
-                     onClick={() => {
-                       identify(ownerId, owners, setExistingId)
-                     }}
+                     onClick={() => identify(ownerId, setExistingId, setError)}
               />
             </div>
+            { error && <div className="alert alert-danger mt-2">{ error }</div> }
             <hr/>
             <h3>Create new SME account</h3>
             <div className="form-row">
@@ -68,6 +72,7 @@ export const Owners = () => {
                 <input className="form-control"
                        onChange={(e) => { setTitle(e.target.value) }}
                        value={title}
+                       placeholder="Your display name for the customers"
                 />
               </div>
               <div className="form-group col-4">
@@ -75,6 +80,7 @@ export const Owners = () => {
                 <input className="form-control"
                        onChange={(e) => { setEmail(e.target.value) }}
                        value={email}
+                       placeholder="A working contact email"
                 />
               </div>
               <div className="form-group col-4">
@@ -82,6 +88,7 @@ export const Owners = () => {
                 <input className="form-control"
                        onChange={(e) => { setPaymentPk(e.target.value) }}
                        value={paymentPk}
+                       placeholder="Your public Stripe key for checkouts"
                 />
               </div>
             </div>
