@@ -1,10 +1,12 @@
 const router = require('express').Router()
+const txRouter = require('./txRouter')
 const ownerRouter = require('./ownerRouter')
 const couponRouter = require('./couponRouter')
 const productRouter = require('./productRouter')
 const productCouponRouter = require('./productCouponRouter')
 const path = require('path')
 
+router.use('/api/tx', txRouter)
 router.use('/api/owners', ownerRouter)
 router.use('/api/coupons', couponRouter)
 router.use('/api/products', productRouter)
