@@ -7,7 +7,7 @@ const renderProducts = (products) => {
     <div className="card h-100 p-3">
       <h4>{pr.title}</h4>
       <p>SKU: {pr.sku}</p>
-      <p>Display Price: {pr.price}</p>
+      <p>Display Price: {pr.unit}{pr.price.toFixed(2)}</p>
       <div className="d-flex">
         <Link to={`/support/${pr._id}`} className="btn btn-primary fit-c mr-2">Offer</Link>
         <Link to={`products/${pr._id}/coupons`} className="btn btn-outline-secondary fit-c">Coupons</Link>
@@ -26,6 +26,7 @@ export const Products = () => {
   const [sku, setSku] = useState("")
   const [title, setTitle] = useState("")
   const [price, setPrice] = useState("")
+  const [unit, setUnit] = useState("")
   const [products, setProducts] = useState([])
   useEffect(() => {
     const fetchData = async (id) => {
@@ -42,11 +43,11 @@ export const Products = () => {
       {ownerId && ownerId !== 'undefined' ?
         <>
           <div className="jumbotron mt-3">
-            <h3>Create new product</h3>
+            <h3>Add a new product</h3>
             <p>
               Use this page to create new products so you could issue coupons for them later.
               Make sure you registered them in Stripe first, and don't forget to specify a valid Stripe SKU here.
-              It will be used when your customers will be purchasing coupons for the products.
+              It will be used at checkout when your customers will be purchasing coupons for the products.
             </p>
             <div className="form-row">
               <div className="form-group col-3">
@@ -56,6 +57,7 @@ export const Products = () => {
                          setTitle(e.target.value)
                        }}
                        value={title}
+                       placeholder="How customers recognise it"
                 />
               </div>
               <div className="form-group col-3">
@@ -65,15 +67,27 @@ export const Products = () => {
                          setSku(e.target.value)
                        }}
                        value={sku}
+                       placeholder="Copy SKU from Stripe here"
                 />
               </div>
-              <div className="form-group col-3">
+              <div className="form-group col-2">
                 <label>Display price:</label>
                 <input className="form-control"
                        onChange={(e) => {
                          setPrice(e.target.value)
                        }}
                        value={price}
+                       placeholder="For display only"
+                />
+              </div>
+              <div className="form-group col-1">
+                <label>Currency:</label>
+                <input className="form-control"
+                       onChange={(e) => {
+                         setUnit(e.target.value)
+                       }}
+                       value={unit}
+                       placeholder="£, $, €"
                 />
               </div>
             </div>
@@ -82,7 +96,8 @@ export const Products = () => {
                 title,
                 sku,
                 price,
-                ownerId
+                ownerId,
+                unit
               }).then(res => setProducts([...products, res]))
             }}/>
           </div>

@@ -5,7 +5,7 @@ import {fetchOwner, fetchProduct, issueCoupon} from "../api/api";
 export const PurchaseCoupon = () => {
   const { productId } = useParams()
   const { status } = useParams()
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState()
   const [owner, setOwner] = useState({})
   const [newCoupon, setNewCoupon] = useState({})
   useEffect(() => {
@@ -32,8 +32,9 @@ export const PurchaseCoupon = () => {
               Support your favourite company by purchasing the coupon that you can use later
             </div>
             <h2>Coupon offer for "{ product.title }"</h2>
-            <p>Offering company: { product.ownerId }</p>
-            <p>Display price: { product.price }</p>
+            <p>Display price: { product.unit }{ product.price.toFixed(2) }</p>
+            <p>Offering company: { owner.title }</p>
+            <p>Contact: { owner.email }</p>
             { status !== 'success' && <>
               <button
                 className="btn btn-primary"
