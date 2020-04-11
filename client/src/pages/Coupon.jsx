@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {fetchCoupon, redeemCoupon} from "../api/api";
+import {fetchCoupon, fetchProduct, redeemCoupon} from "../api/api";
 import QRCode from "qrcode"
 
 export const Coupon = () => {
   const { couponId } = useParams()
-  const [coupon, setCoupon] = useState({})
+  const [coupon, setCoupon] = useState()
+  const [product, setProduct] = useState()
   const [qrData, setQrData] = useState()
   useEffect(() => {
     const fetchData = async (id) => {
@@ -13,6 +14,8 @@ export const Coupon = () => {
       setCoupon(res)
       const qr = await QRCode.toDataURL(window.location.href)
       setQrData(qr)
+      const pr = await fetchProduct(res.productId)
+      setProduct(pr)
     }
     if (couponId) {
       fetchData(couponId)
@@ -21,10 +24,10 @@ export const Coupon = () => {
 
   return (
     <div className="container">
-      {coupon ? <div className="jumbotron mt-3">
+      {coupon && product ? <div className="jumbotron mt-3">
         <h3>Unique coupon ID: {coupon._id}</h3>
         <img src={qrData} alt={qrData} />
-        <p>Product: {coupon.productId}</p>
+        <p>Product: {product.title}</p>
         <p>Redeemed: { `${coupon.isRedeemed}` }</p>
         <p>Issued on: {coupon.timestamp}</p>
         <input className="btn btn-primary" type="button" value="Redeem" onClick={() => {
